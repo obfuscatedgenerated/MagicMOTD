@@ -68,5 +68,7 @@ public class CommandForceMOTD extends Command {
 
         // set the forced MOTD
         this.ping_handler.setForceMOTDIndex(index);
+
+        sender.sendMessage(new ComponentBuilder("Set the forced MOTD to index " + index + ".").color(ChatColor.GREEN).create());
     }
 }
