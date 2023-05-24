@@ -17,7 +17,7 @@ public class CommandForceMOTD extends Command {
 
     public CommandForceMOTD(@NotNull MagicMOTD plugin) {
         // set the name and permission
-        super("forcemotd", "magicmotd.forcemotd", "fmotd");
+        super("forcemotd", "magicmotd.force", "fmotd");
 
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null!");
