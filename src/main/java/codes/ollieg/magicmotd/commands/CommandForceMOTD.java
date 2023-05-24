@@ -56,6 +56,14 @@ public class CommandForceMOTD extends Command {
             return;
         }
 
+        if (args[0].equalsIgnoreCase("help")) {
+            sender.sendMessage(new ComponentBuilder("Usage: /forcemotd [index]").color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder("When using the /forcemotd command, you can specify the position in the list of messages to force.").color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder("For example, /forcemotd 1 will force the first message in the list.").color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder("To reset the forced MOTD, run /forcemotd without any arguments.").color(ChatColor.GREEN).create());
+            return;
+        }
+
         // if args are not empty, try to parse the index
         int index;
         try {
