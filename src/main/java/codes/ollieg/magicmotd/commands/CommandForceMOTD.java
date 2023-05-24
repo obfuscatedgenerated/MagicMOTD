@@ -53,7 +53,7 @@ public class CommandForceMOTD extends Command {
         // if args are not empty, try to parse the index
         int index;
         try {
-            index = Integer.parseInt(args[0]) + 1;
+            index = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
             sender.sendMessage(new ComponentBuilder("Invalid index!").color(ChatColor.RED).create());
             return;
