@@ -1,0 +1,4 @@
+name: MagicMOTD
+version: '${project.version}'
+main: codes.ollieg.magicmotd.MagicMOTD
+description: ${project.description}

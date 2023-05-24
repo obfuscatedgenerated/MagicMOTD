@@ -1,0 +1,16 @@
+# The player name to use if the IP has not been seen before.
+default_player_name: Player
+
+# Define each message here.
+# You can use formatting codes with § and newlines with \n.
+# You can use placeholders to show dynamic information.
+# Available placeholders:
+# %player% - Player name
+# %online% - Online player count
+# %max% - Max player count
+# %ping% - Player ping in milliseconds
+messages:
+  - "§aHello, §e%player%§a!"
+  - "§cThere are §e%online%/%max%§c players online!"
+  - "§dYour ping is §e%ping%§a ms!"
+  - "§eLine 1\nLine 2"
