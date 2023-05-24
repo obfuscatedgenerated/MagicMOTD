@@ -43,6 +43,12 @@ public class CommandForceMOTD extends Command {
             return;
         }
 
+        if (args.length > 1) {
+            sender.sendMessage(new ComponentBuilder("Too many arguments!").color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder("Usage: /forcemotd [index]").color(ChatColor.RED).create());
+            return;
+        }
+
         // if args are empty, reset the forced MOTD
         if (args.length == 0) {
             this.ping_handler.setForceMOTDIndex(-1);
