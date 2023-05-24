@@ -14,3 +14,7 @@ messages:
   - "§cThere are §e%online%/%max%§c players online!"
   - "§dYour ping is §e%ping%§a ms!"
   - "§eLine 1\nLine 2"
+
+# When using the /forcemotd command, you can specify the position in the list of messages to force.
+# For example, to force the first message, you would use /forcemotd 1.
+# To stop forcing a message, use /forcemotd (without a number).
