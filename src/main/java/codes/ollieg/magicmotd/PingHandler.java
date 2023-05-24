@@ -5,6 +5,8 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class PingHandler implements Listener {
     private final ConfigLoader config_loader;
 
@@ -37,8 +39,50 @@ public class PingHandler implements Listener {
     }
 
 
+    private String getMOTD(int index, ProxyPingEvent event) {
+        String motd = this.config_loader.getParsedConfig().getMessages().get(index);
+
+        // get the player's ip address
+        String ip = event.getConnection().getSocketAddress().toString();
+
+        // TODO: resolve player name
+        String name = this.config_loader.getParsedConfig().getDefaultPlayerName();
+
+        // get player count
+        int player_count = event.getConnection().getListener().getTabListSize();
+        int max_players = event.getConnection().getListener().getMaxPlayers();
+
+        return this.config_loader.substituteTemplates(motd, name, player_count, max_players);
+    }
+
+
     @EventHandler
-    private void onPing(ProxyPingEvent event) {
-        // TODO: serve MOTD
+    private void onPing(@NotNull ProxyPingEvent event) {
+        if (event == null) {
+            throw new IllegalArgumentException("Event cannot be null!");
+        }
+
+
+        if (!this.config_loader.isParsed()) {
+            throw new IllegalStateException("Config has not been parsed yet!");
+        }
+
+        List<String> motds = this.config_loader.getParsedConfig().getMessages();
+
+        // if forcing an MOTD, check if the index is valid
+        // if invalid, fall back to random MOTD
+        int index = this.force_motd_index;
+
+        if (this.force_motd_index < 0 || this.force_motd_index >= motds.size()) {
+            index = -1;
+        }
+
+        // if not forcing an MOTD, get a random MOTD
+        if (index == -1) {
+            index = (int) (Math.random() * motds.size());
+        }
+
+        // set the MOTD
+        event.getResponse().setDescription(getMOTD(index, event));
     }
 }

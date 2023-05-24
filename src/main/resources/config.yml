@@ -1,20 +1,22 @@
 # The player name to use if the IP has not been seen before.
 default_player_name: Player
 
-# Define each message here.
+# Define each MOTD here.
 # You can use formatting codes with § and newlines with \n.
 # You can use templates to show dynamic information.
 # Available templates:
 # %player% - Player name
 # %online% - Online player count
 # %max% - Max player count
-# %ping% - Player ping in milliseconds
-messages:
+motds:
   - "§aHello, §e%player%§a!"
   - "§cThere are §e%online%/%max%§c players online!"
-  - "§dYour ping is §e%ping%§a ms!"
   - "§eLine 1\nLine 2"
 
 # When using the /forcemotd command, you can specify the position in the list of messages to force.
 # For example, to force the first message, you would use /forcemotd 1.
 # To stop forcing a message, use /forcemotd (without a number).
+
+# Define each message here.
+# These are the messages sent to users of the commands. You may edit them to change or translate them, for example.
+messages:

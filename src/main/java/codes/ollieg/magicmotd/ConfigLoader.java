@@ -251,15 +251,13 @@ public class ConfigLoader {
      * @param player_name       The player name
      * @param online_players    The number of online players
      * @param max_players       The maximum number of players
-     * @param ping_ms           The ping in milliseconds
      *
      * @return The substituted message
      */
-    public String substituteTemplates(String message, String player_name, int online_players, int max_players, int ping_ms) {
+    public String substituteTemplates(String message, String player_name, int online_players, int max_players) {
         return message.replaceAll("%player%", player_name)
                 .replaceAll("%online%", String.valueOf(online_players))
-                .replaceAll("%max%", String.valueOf(max_players))
-                .replaceAll("%ping%", String.valueOf(ping_ms));
+                .replaceAll("%max%", String.valueOf(max_players));
     }
 
 
@@ -280,12 +278,12 @@ public class ConfigLoader {
         this.parsed_config.setDefaultPlayerName(default_player_name);
 
 
-        if (!this.config.contains("messages")) {
-            throw new RuntimeException("Messages section not found in config!");
+        if (!this.config.contains("motds")) {
+            throw new RuntimeException("motds not found in config!");
         }
 
         // load each message and validate templates
-        List<String> messages = this.config.getStringList("messages");
+        List<String> messages = this.config.getStringList("motds");
 
         for (String message : messages) {
             // check if the message is empty
@@ -300,6 +298,8 @@ public class ConfigLoader {
             // push the message to the list of messages
             this.parsed_config.getMessages().add(message);
         }
+
+        this.is_parsed = true;
     }
 
     /**
