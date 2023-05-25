@@ -1,5 +1,8 @@
-package codes.ollieg.magicmotd;
+package codes.ollieg.magicmotd.handlers;
 
+import codes.ollieg.magicmotd.ConfigLoader;
+import codes.ollieg.magicmotd.MagicMOTD;
+import codes.ollieg.magicmotd.PlayerDB;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;

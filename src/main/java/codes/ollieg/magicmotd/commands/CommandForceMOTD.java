@@ -2,7 +2,7 @@ package codes.ollieg.magicmotd.commands;
 
 import codes.ollieg.magicmotd.ConfigLoader;
 import codes.ollieg.magicmotd.MagicMOTD;
-import codes.ollieg.magicmotd.PingHandler;
+import codes.ollieg.magicmotd.handlers.PingHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;

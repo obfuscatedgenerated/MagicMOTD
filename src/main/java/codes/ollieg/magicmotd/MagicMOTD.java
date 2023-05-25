@@ -2,6 +2,8 @@ package codes.ollieg.magicmotd;
 
 import codes.ollieg.magicmotd.commands.CommandForceMOTD;
 import codes.ollieg.magicmotd.commands.CommandReloadMOTD;
+import codes.ollieg.magicmotd.handlers.PingHandler;
+import codes.ollieg.magicmotd.handlers.PostLoginHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -33,6 +35,7 @@ public final class MagicMOTD extends Plugin {
 
         // register listeners and commands
         plugin_manager.registerListener(this, this.ping_handler);
+        plugin_manager.registerListener(this, new PostLoginHandler(this));
 
         plugin_manager.registerCommand(this, new CommandReloadMOTD(this.config_loader));
         plugin_manager.registerCommand(this, new CommandForceMOTD(this));

@@ -26,8 +26,9 @@ public class PlayerDB {
 
         this.plugin = plugin;
 
+        // use MySQL mode to allow for ON DUPLICATE KEY UPDATE
         File db_path = new File(this.plugin.getDataFolder(), "MagicMOTD");
-        url = "jdbc:h2:" + db_path.getAbsolutePath();
+        url = "jdbc:h2:" + db_path.getAbsolutePath() + ";mode=MySQL";
 
         try {
             Class.forName("org.h2.Driver");
@@ -80,7 +81,7 @@ public class PlayerDB {
      * @throws IllegalStateException if the database is not ready
      * @throws RuntimeException if the connection fails
      */
-    public void putNameForIP(@NotNull String ip, @NotNull String name) throws SQLException {
+    public void setNameForIP(@NotNull String ip, @NotNull String name) throws SQLException {
         if (ip == null) {
             throw new IllegalArgumentException("IP cannot be null!");
         }
