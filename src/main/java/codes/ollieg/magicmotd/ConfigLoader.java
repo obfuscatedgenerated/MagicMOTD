@@ -338,7 +338,16 @@ public class ConfigLoader {
      *
      * @return The substituted message
      */
-    public String substituteTemplates(String message, String player_name, int online_players, int max_players) {
+    public String substituteTemplates(@NotNull String message, @NotNull String player_name, int online_players, int max_players) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null!");
+        }
+
+        if (player_name == null) {
+            throw new IllegalArgumentException("Player name cannot be null!");
+        }
+
+
         Matcher template_matcher = TEMPLATE_REGEX.matcher(message);
 
         while (template_matcher.find()) {
