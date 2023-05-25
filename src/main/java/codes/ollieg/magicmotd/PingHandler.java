@@ -8,9 +8,12 @@ import net.md_5.bungee.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PingHandler implements Listener {
     private final ConfigLoader config_loader;
+    private final PlayerDB player_db;
+    private final Logger logger;
 
     private int force_motd_index = -1;
 
@@ -20,6 +23,8 @@ public class PingHandler implements Listener {
         }
 
         this.config_loader = plugin.getConfigLoader();
+        this.player_db = plugin.getPlayerDB();
+        this.logger = plugin.getLogger();
     }
 
     /**
@@ -49,11 +54,23 @@ public class PingHandler implements Listener {
         try {
             address = address.substring(0, address.indexOf("/"));
         } catch (StringIndexOutOfBoundsException e) {
-            // do nothing
+            this.logger.warning("Could not substring IP: " + address);
         }
 
-        // TODO: resolve player name
-        String name = this.config_loader.getParsedConfig().getDefaultPlayerName();
+        // resolve the player's name
+        String name;
+        try {
+            name = this.player_db.getNameForIP(address);
+        } catch (Exception e) {
+            this.logger.warning("Could not resolve name for IP: " + address);
+            this.logger.warning(e.getMessage());
+            name = null;
+        }
+
+        // fall back to the default player name if not found
+        if (name == null) {
+            name = this.config_loader.getParsedConfig().getDefaultPlayerName();
+        }
 
         // get player count
         int player_count = event.getConnection().getListener().getTabListSize();
