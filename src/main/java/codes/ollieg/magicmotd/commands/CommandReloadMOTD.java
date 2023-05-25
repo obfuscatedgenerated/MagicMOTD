@@ -7,6 +7,9 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.plugin.Command;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The /reloadmotd command.
+ */
 public class CommandReloadMOTD extends Command {
     private final ConfigLoader config_loader;
 

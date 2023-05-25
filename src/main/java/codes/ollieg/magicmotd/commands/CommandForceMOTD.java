@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * The /forcemotd command.
+ */
 public class CommandForceMOTD extends Command {
     private final PingHandler ping_handler;
     private final ConfigLoader config_loader;
