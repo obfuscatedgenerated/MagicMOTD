@@ -58,7 +58,7 @@ public class PingHandler implements Listener {
 
 
     @EventHandler
-    private void onPing(@NotNull ProxyPingEvent event) {
+    public void onPing(@NotNull ProxyPingEvent event) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null!");
         }
