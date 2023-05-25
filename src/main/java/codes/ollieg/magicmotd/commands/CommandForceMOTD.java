@@ -55,7 +55,7 @@ public class CommandForceMOTD extends Command {
         // if args are empty, reset the forced MOTD
         if (args.length == 0) {
             this.ping_handler.setForceMOTDIndex(-1);
-            sender.sendMessage(new ComponentBuilder(config.getMessage("force.reset-success")).color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.reset-success")).color(ChatColor.GREEN).create());
             return;
         }
 
