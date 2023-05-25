@@ -2,3 +2,5 @@ name: MagicMOTD
 version: '${project.version}'
 main: codes.ollieg.magicmotd.MagicMOTD
 description: ${project.description}
+author: obfuscatedgenerated (ollieg.codes)
+website: ollieg.codes
