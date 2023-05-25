@@ -7,6 +7,8 @@ server operators to serve customised MOTDs to players.
 
 As opposed to SwiftMOTD, the plugin stores the IP to player name map to the disk, so that it is recovered when the server restarts. Additionally, it uses up to date BungeeCord APIs, to avoid deprecation and eliminate the BungeeYAML dependency.
 
+I don't know how performant this is in production. You may see some warnings that the plugin takes a while to respond to events, but these can usually be ignored.
+
 ## Features
 
 - Send a random MOTD from a list of MOTDs
