@@ -1,5 +1,6 @@
 package codes.ollieg.magicmotd;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -83,6 +84,6 @@ public class PingHandler implements Listener {
         }
 
         // set the MOTD
-        event.getResponse().setDescription(getMOTD(index, event));
+        event.getResponse().setDescriptionComponent(TextComponent.fromLegacyText(this.getMOTD(index, event))[0]);
     }
 }
