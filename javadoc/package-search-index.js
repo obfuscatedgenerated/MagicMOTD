@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"codes.ollieg.magicmotd"},{"l":"codes.ollieg.magicmotd.commands"},{"l":"codes.ollieg.magicmotd.handlers"}];updateSearchResults();
