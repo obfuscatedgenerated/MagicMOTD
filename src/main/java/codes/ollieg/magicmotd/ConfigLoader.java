@@ -5,8 +5,8 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,10 +75,23 @@ public class ConfigLoader {
 
             this.plugin.getLogger().info("Created config file!");
 
-            // copy default config from resources
-            ConfigurationProvider yaml = ConfigurationProvider.getProvider(YamlConfiguration.class);
-            Configuration default_conf = yaml.load(this.plugin.getResourceAsStream("config.yml"));
-            yaml.save(default_conf, file);
+            // copy default config from resources as utf-8
+            BufferedWriter writer = Files.newBufferedWriter(file.toPath(), java.nio.charset.StandardCharsets.UTF_8);
+            InputStream default_config = this.plugin.getResourceAsStream("config.yml");
+
+            if (default_config == null) {
+                throw new IOException("Failed to get default config from resources!");
+            }
+
+            // don't directly pipe the stream to the writer, interpret it as utf-8 first
+            Reader default_config_reader = new InputStreamReader(default_config, java.nio.charset.StandardCharsets.UTF_8);
+
+            while (default_config_reader.ready()) {
+                writer.write(default_config_reader.read());
+            }
+
+            writer.close();
+            default_config.close();
 
             this.plugin.getLogger().info("Copied default config!");
         }
