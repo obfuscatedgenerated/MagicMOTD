@@ -10,10 +10,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
+/**
+ * Listens for the {@link PostLoginEvent} and handles it.<br>
+ * Stores the player's name under their IP in the database.
+ */
 public class PostLoginHandler implements Listener {
     private final PlayerDB player_db;
     private final Logger logger;
 
+    /**
+     * Constructs a new {@link PostLoginHandler}.
+     * @param plugin the {@link MagicMOTD} instance
+     */
     public PostLoginHandler(@NotNull MagicMOTD plugin) {
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null!");
@@ -23,6 +31,10 @@ public class PostLoginHandler implements Listener {
         this.logger = plugin.getLogger();
     }
 
+    /**
+     * Called by BungeeCord when a {@link PostLoginEvent} is fired.
+     * @param event the {@link PostLoginEvent}
+     */
     @EventHandler
     public void onPostLogin(@NotNull PostLoginEvent event) {
         if (event == null) {

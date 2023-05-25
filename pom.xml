@@ -15,10 +15,11 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <finalName>${project.name} v${project.version}</finalName>
     </properties>
 
     <build>
-        <finalName>${project.name} v${project.version}</finalName>
+        <finalName>${finalName}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -44,6 +45,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- generate javadoc site -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <!-- exclude private members -->
+                    <show>protected</show>
+
+                    <!-- change doctitle -->
+                    <doctitle>${finalName} - API Docs</doctitle>
+                </configuration>
             </plugin>
         </plugins>
         <resources>

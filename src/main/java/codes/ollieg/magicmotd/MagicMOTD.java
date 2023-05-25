@@ -9,24 +9,42 @@ import net.md_5.bungee.api.plugin.PluginManager;
 
 import java.sql.SQLException;
 
+/**
+ * The main class for the MagicMOTD plugin.
+ */
 public final class MagicMOTD extends Plugin {
     private final ConfigLoader config_loader = new ConfigLoader(this);
     private final PlayerDB player_db = new PlayerDB(this);
     private final PingHandler ping_handler = new PingHandler(this);
 
+    /**
+     * Gets the {@link ConfigLoader} instance associated with this plugin.
+     * @return The {@link ConfigLoader} instance associated with this plugin.
+     */
     public ConfigLoader getConfigLoader() {
         return this.config_loader;
     }
 
+    /**
+     * Gets the {@link PingHandler} instance associated with this plugin.
+     * @return The {@link PingHandler} instance associated with this plugin.
+     */
     public PingHandler getPingHandler() {
         return this.ping_handler;
     }
 
+    /**
+     * Gets the {@link PlayerDB} instance associated with this plugin.
+     * @return The {@link PlayerDB} instance associated with this plugin.
+     */
     public PlayerDB getPlayerDB() {
         return this.player_db;
     }
 
 
+    /**
+     * Called by the BungeeCord plugin system when this plugin is enabled.
+     */
     @Override
     public void onEnable() {
         this.config_loader.reloadConfig();
@@ -50,6 +68,9 @@ public final class MagicMOTD extends Plugin {
         getLogger().info("MagicMOTD has been enabled!");
     }
 
+    /**
+     * Called by the BungeeCord plugin system when this plugin is disabled.
+     */
     @Override
     public void onDisable() {
         getLogger().info("MagicMOTD has been disabled!");

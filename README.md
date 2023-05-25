@@ -70,6 +70,14 @@ mvn package
 
 The built plugin will be located in the `target` directory with the name `MagicMOTD v<version>.jar`.
 
+You can build the javadoc by running:
+
+```shell
+mvn javadoc:javadoc
+```
+
+The javadoc will be located in the `target/site/apidocs` directory.
+
 ### API Usage
 
 The plugin exposes an API for other plugins to use. The API is exposed through the `MagicMOTD` class.

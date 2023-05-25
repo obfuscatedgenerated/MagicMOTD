@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A KV store of player IP addresses to names.
+ */
 public class PlayerDB {
     private final MagicMOTD plugin;
     private final String url;

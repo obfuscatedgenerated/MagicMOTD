@@ -14,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Listens for the {@link ProxyPingEvent} and handles it.<br>
+ * Rewrites the MOTD.
+ */
 public class PingHandler implements Listener {
     private final ConfigLoader config_loader;
     private final PlayerDB player_db;
@@ -21,6 +25,10 @@ public class PingHandler implements Listener {
 
     private int force_motd_index = -1;
 
+    /**
+     * Constructs a new {@link PingHandler}.
+     * @param plugin the {@link MagicMOTD} instance
+     */
     public PingHandler(@NotNull MagicMOTD plugin) {
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null!");
@@ -50,6 +58,13 @@ public class PingHandler implements Listener {
     }
 
 
+    /**
+     * Gets the MOTD to use for the ping event.
+     *
+     * @param index the index of the MOTD to use
+     * @param event the {@link ProxyPingEvent} instance
+     * @return the templated MOTD to use
+     */
     private String getMOTD(int index, ProxyPingEvent event) {
         String motd = this.config_loader.getParsedConfig().getMOTDs().get(index);
 
@@ -85,6 +100,10 @@ public class PingHandler implements Listener {
     }
 
 
+    /**
+     * Called by BungeeCord when a {@link ProxyPingEvent} is fired.
+     * @param event the {@link ProxyPingEvent}
+     */
     @EventHandler
     public void onPing(@NotNull ProxyPingEvent event) {
         if (event == null) {
