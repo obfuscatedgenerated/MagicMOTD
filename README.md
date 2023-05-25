@@ -15,6 +15,7 @@ I don't know how performant this is in production. You may see some warnings tha
 - Format the MOTD with colours and formatting codes
 - Use templates to display dynamic information
 - Force a specific MOTD with a command
+- Access and edit the IP to player name database through the [plugin API](#api-usage)
 
 ## How does it work?
 
@@ -68,3 +69,65 @@ mvn package
 ```
 
 The built plugin will be located in the `target` directory with the name `MagicMOTD v<version>.jar`.
+
+### API Usage
+
+The plugin exposes an API for other plugins to use. The API is exposed through the `MagicMOTD` class.
+
+#### Getting the API
+
+To use the API, you first need to specify MagicMOTD as a provided dependency in your build system.
+
+Maven:
+
+```xml
+<!-- in your <repositories> section -->
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+
+<!-- in your <dependencies> section -->
+<dependency>
+    <groupId>com.github.obfuscatedgenerated</groupId>
+    <artifactId>MagicMOTD</artifactId>
+    <version>VERSION</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+Gradle:
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'com.github.obfuscatedgenerated:MagicMOTD:VERSION'
+}
+```
+
+#### Using the API
+
+To get the API, you need to get the `MagicMOTD` instance from the plugin manager and cast it to the API interface. Something along the lines of:
+
+```java
+import codes.ollieg.magicmotd.MagicMOTD;
+
+// ...
+
+MagicMOTD api = (MagicMOTD) ProxyServer.getInstance().getPluginManager().getPlugin("MagicMOTD");
+```
+
+Then, you can access the `PlayerDB` by calling `api.getPlayerDB()`. This returns an instance of `PlayerDB`:
+    
+```java
+import codes.ollieg.magicmotd.PlayerDB;
+
+// ...
+
+PlayerDB playerDB = api.getPlayerDB();
+```
+
+For documentation of the available methods, please [consult the javadoc]().
