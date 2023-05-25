@@ -125,7 +125,7 @@ import codes.ollieg.magicmotd.MagicMOTD;
 
 // ...
 
-MagicMOTD api = (MagicMOTD) ProxyServer.getInstance().getPluginManager().getPlugin("MagicMOTD");
+MagicMOTD api = (MagicMOTD) getProxy().getPluginManager().getPlugin("MagicMOTD");
 ```
 
 Then, you can access the `PlayerDB` by calling `api.getPlayerDB()`. This returns an instance of `PlayerDB`:
