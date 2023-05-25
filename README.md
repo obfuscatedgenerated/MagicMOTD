@@ -138,4 +138,4 @@ import codes.ollieg.magicmotd.PlayerDB;
 PlayerDB playerDB = api.getPlayerDB();
 ```
 
-For documentation of the available methods, please [consult the javadoc]().
+**For documentation of the available methods, please [consult the javadoc](https://ollieg.codes/MagicMOTD/javadoc/).**
