@@ -120,7 +120,9 @@ public class ConfigLoader {
         // load the config
         File config_file = new File(this.plugin.getDataFolder(), "config.yml");
         try {
-            this.config = yaml.load(config_file);
+            // force as utf-8
+            Reader reader = Files.newBufferedReader(config_file.toPath(), java.nio.charset.StandardCharsets.UTF_8);
+            this.config = yaml.load(reader);
         } catch (IOException e) {
             this.plugin.getLogger().severe("Failed to load config!");
             e.printStackTrace();
@@ -306,7 +308,7 @@ public class ConfigLoader {
         Matcher template_matcher = TEMPLATE_REGEX.matcher(message);
 
         while (template_matcher.find()) {
-            String match = template_matcher.group(1);
+            String match = template_matcher.group(0);
 
             // refine the match down to the content between the percent signs
             Matcher between_percent_matcher = BETWEEN_PERCENT_REGEX.matcher(match);
@@ -318,7 +320,7 @@ public class ConfigLoader {
             }
 
 
-            if (!KNOWN_TEMPLATES.contains(match)) {
+            if (!KNOWN_TEMPLATES.contains(match.toLowerCase())) {
                 return false;
             }
         }
@@ -337,9 +339,39 @@ public class ConfigLoader {
      * @return The substituted message
      */
     public String substituteTemplates(String message, String player_name, int online_players, int max_players) {
-        return message.replaceAll("%player%", player_name)
-                .replaceAll("%online%", String.valueOf(online_players))
-                .replaceAll("%max%", String.valueOf(max_players));
+        Matcher template_matcher = TEMPLATE_REGEX.matcher(message);
+
+        while (template_matcher.find()) {
+            String full_match = template_matcher.group(0);
+
+            // refine the match down to the content between the percent signs
+            Matcher between_percent_matcher = BETWEEN_PERCENT_REGEX.matcher(full_match);
+
+            String template;
+            if (between_percent_matcher.find()) {
+                template = between_percent_matcher.group(1);
+            } else {
+                continue;
+            }
+
+            if(!KNOWN_TEMPLATES.contains(template.toLowerCase())) {
+                continue;
+            }
+
+            switch(template) {
+                case "player":
+                    message = message.replace(full_match, player_name);
+                    break;
+                case "online":
+                    message = message.replace(full_match, String.valueOf(online_players));
+                    break;
+                case "max":
+                    message = message.replace(full_match, String.valueOf(max_players));
+                    break;
+            }
+        }
+
+        return message;
     }
 
 
@@ -378,7 +410,7 @@ public class ConfigLoader {
             }
 
             if (!validateTemplates(motd)) {
-                throw new RuntimeException("Invalid template \"" + motd + "\" found in config!\\nYou may need to escape percent signs with a backslash (\\\\). E.g: \\\\%");
+                throw new RuntimeException("Invalid template in \"" + motd + "\" found in config!\nYou may need to escape percent signs with a backslash (\\\\). E.g: \\\\%");
             }
 
             // push the motd to the list of motds
@@ -393,11 +425,16 @@ public class ConfigLoader {
         List<String> keys = new ArrayList<>();
 
         // check each key for nested keys
-        for (String key: top_level_keys) {
-            if (messages.getSection(key) != null) {
-                keys.addAll(messages.getSection(key).getKeys());
+        // only one level of nesting is supported or required
+        for (String top_level_key: top_level_keys) {
+            if (messages.get(top_level_key) instanceof Configuration) {
+                Collection<String> nested_keys = messages.getSection(top_level_key).getKeys();
+
+                for (String nested_key : nested_keys) {
+                    keys.add(top_level_key + "." + nested_key);
+                }
             } else {
-                keys.add(key);
+                keys.add(top_level_key);
             }
         }
 
