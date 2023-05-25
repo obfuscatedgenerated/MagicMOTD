@@ -3,6 +3,7 @@ package codes.ollieg.magicmotd.handlers;
 import codes.ollieg.magicmotd.ConfigLoader;
 import codes.ollieg.magicmotd.MagicMOTD;
 import codes.ollieg.magicmotd.PlayerDB;
+import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
@@ -75,9 +76,10 @@ public class PingHandler implements Listener {
             name = this.config_loader.getParsedConfig().getDefaultPlayerName();
         }
 
-        // get player count
-        int player_count = event.getConnection().getListener().getTabListSize();
-        int max_players = event.getConnection().getListener().getMaxPlayers();
+        // get player counts
+        ServerPing.Players player_counts = event.getResponse().getPlayers();
+        int player_count = player_counts.getOnline();
+        int max_players = player_counts.getMax();
 
         return this.config_loader.substituteTemplates(motd, name, player_count, max_players);
     }
