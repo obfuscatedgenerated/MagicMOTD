@@ -39,12 +39,15 @@ public class CommandForceMOTD extends Command {
 
 
         if (!this.config_loader.isParsed()) {
+            // we can't make this message customisable since the config hasn't been parsed yet
             sender.sendMessage(new ComponentBuilder("The config has not been parsed yet! Please contact the proxy administrator.").color(ChatColor.RED).create());
             return;
         }
 
+        ConfigLoader.ParsedConfig config = this.config_loader.getParsedConfig();
+
         if (args.length > 1) {
-            sender.sendMessage(new ComponentBuilder("Too many arguments!").color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("too-many-args")).color(ChatColor.RED).create());
             sender.sendMessage(new ComponentBuilder("Usage: /forcemotd [index]").color(ChatColor.RED).create());
             return;
         }
@@ -52,15 +55,15 @@ public class CommandForceMOTD extends Command {
         // if args are empty, reset the forced MOTD
         if (args.length == 0) {
             this.ping_handler.setForceMOTDIndex(-1);
-            sender.sendMessage(new ComponentBuilder("Reset the forced MOTD.").color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.reset-success")).color(ChatColor.RED).create());
             return;
         }
 
         if (args[0].equalsIgnoreCase("help")) {
             sender.sendMessage(new ComponentBuilder("Usage: /forcemotd [index]").color(ChatColor.GREEN).create());
-            sender.sendMessage(new ComponentBuilder("When using the /forcemotd command, you can specify the position in the list of messages to force.").color(ChatColor.GREEN).create());
-            sender.sendMessage(new ComponentBuilder("For example, /forcemotd 1 will force the first message in the list.").color(ChatColor.GREEN).create());
-            sender.sendMessage(new ComponentBuilder("To reset the forced MOTD, run /forcemotd without any arguments.").color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.command-descriptor")).color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.command-example")).color(ChatColor.GREEN).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.reset-descriptor")).color(ChatColor.GREEN).create());
             return;
         }
 
@@ -69,22 +72,28 @@ public class CommandForceMOTD extends Command {
         try {
             index = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(new ComponentBuilder("Invalid index!").color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.invalid-index")).color(ChatColor.RED).create());
             return;
         }
 
-        List<String> motds = this.config_loader.getParsedConfig().getMessages();
+        List<String> motds = config.getMOTDs();
 
         if (index < 1 || index >= motds.size()) {
-            sender.sendMessage(new ComponentBuilder("Index out of range (1 to number of MOTDs). Available MOTDs: " + motds.size()).color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("force.out-of-range")
+                    .replaceAll("(?i)%max%", String.valueOf(motds.size()))
+            ).color(ChatColor.RED).create());
+
             return;
         }
 
         // set the forced MOTD
         this.ping_handler.setForceMOTDIndex(index);
 
-        sender.sendMessage(new ComponentBuilder("Set the forced MOTD to index " + index + ".").color(ChatColor.GREEN).create());
-        sender.sendMessage(new ComponentBuilder("Content: " + motds.get(index)).color(ChatColor.GREEN).create());
-        sender.sendMessage(new ComponentBuilder("To reset the forced MOTD, run /forcemotd without any arguments.").color(ChatColor.GREEN).create());
+        sender.sendMessage(new ComponentBuilder(config.getMessage("force.success")
+                .replaceAll("(?i)%index%", String.valueOf(index))
+                .replaceAll("(?i)%content%", motds.get(index))
+        ).color(ChatColor.GREEN).create());
+
+        sender.sendMessage(new ComponentBuilder(config.getMessage("force.reset-descriptor")).color(ChatColor.GREEN).create());
     }
 }

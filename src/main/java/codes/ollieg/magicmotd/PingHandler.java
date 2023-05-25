@@ -40,7 +40,7 @@ public class PingHandler implements Listener {
 
 
     private String getMOTD(int index, ProxyPingEvent event) {
-        String motd = this.config_loader.getParsedConfig().getMessages().get(index);
+        String motd = this.config_loader.getParsedConfig().getMOTDs().get(index);
 
         // get the player's ip address
         String ip = event.getConnection().getSocketAddress().toString();
@@ -67,7 +67,7 @@ public class PingHandler implements Listener {
             throw new IllegalStateException("Config has not been parsed yet!");
         }
 
-        List<String> motds = this.config_loader.getParsedConfig().getMessages();
+        List<String> motds = this.config_loader.getParsedConfig().getMOTDs();
 
         // if forcing an MOTD, check if the index is valid
         // if invalid, fall back to random MOTD

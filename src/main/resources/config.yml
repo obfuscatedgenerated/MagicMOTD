@@ -19,4 +19,19 @@ motds:
 
 # Define each message here.
 # These are the messages sent to users of the commands. You may edit them to change or translate them, for example.
+# For the force.out-of-range message, you can use the %max% template to show the maximum index.
+# For the force.success message, you can use the %index% and %content% templates to show the index and content of the forced MOTD.
 messages:
+  too-many-args: "Too many arguments!"
+  force:
+    command-descriptor: "When using the /forcemotd command, you can specify the position in the list of messages to force."
+    command-example: "For example, /forcemotd 1 will force the first message in the list."
+    reset-descriptor: "To reset the forced MOTD, run /forcemotd without any arguments."
+    reset-success: "Reset the forced MOTD successfully."
+    invalid-index: "Invalid index!"
+    out-of-range: "Index out of range! Specify a number between 1 and %max%."
+    success: "Set the forced MOTD to %index%. Content: %content%"
+  reload:
+    pending: "Reloading the MagicMOTD config..."
+    success: "Reloaded the MagicMOTD config successfully!"
+    fail: "Failed to reload the MagicMOTD config! Please check the proxy console for more information."

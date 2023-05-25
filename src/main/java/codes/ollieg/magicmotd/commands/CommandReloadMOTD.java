@@ -32,19 +32,22 @@ public class CommandReloadMOTD extends Command {
 
 
         if (!this.config_loader.isParsed()) {
+            // we can't make this message customisable since the config hasn't been parsed yet
             sender.sendMessage(new ComponentBuilder("The config has not been parsed yet! Please contact the proxy administrator.").color(ChatColor.RED).create());
             return;
         }
 
-        sender.sendMessage(new ComponentBuilder("Reloading the MagicMOTD config...").color(ChatColor.GREEN).create());
+        ConfigLoader.ParsedConfig config = this.config_loader.getParsedConfig();
+
+        sender.sendMessage(new ComponentBuilder(config.getMessage("reload.pending")).color(ChatColor.GREEN).create());
 
         boolean success = this.config_loader.reloadConfig();
 
         if (!success) {
-            sender.sendMessage(new ComponentBuilder("Failed to reload the MagicMOTD config! Check the proxy logs.").color(ChatColor.RED).create());
+            sender.sendMessage(new ComponentBuilder(config.getMessage("reload.fail")).color(ChatColor.RED).create());
             return;
         }
 
-        sender.sendMessage(new ComponentBuilder("Reloaded the MagicMOTD config!").color(ChatColor.GREEN).create());
+        sender.sendMessage(new ComponentBuilder(config.getMessage("reload.success")).color(ChatColor.GREEN).create());
     }
 }

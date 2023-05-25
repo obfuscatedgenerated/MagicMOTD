@@ -7,9 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -155,13 +153,23 @@ public class ConfigLoader {
      */
     public static class ParsedConfig {
         private String default_player_name = "Player";
-        private List<String> messages = new ArrayList<>();
+        private List<String> motds = new ArrayList<>();
+        private Map<String, String> messages = new HashMap<>();
 
 
+        /**
+         * Gets the default player name.
+         * @return the default player name
+         */
         @NotNull public String getDefaultPlayerName() {
             return this.default_player_name;
         }
 
+        /**
+         * Sets the default player name.
+         * @param default_player_name the default player name
+         * @throws IllegalArgumentException if the default player name is null
+         */
         public void setDefaultPlayerName(@NotNull String default_player_name) {
             if (default_player_name == null) {
                 throw new IllegalArgumentException("Default player name cannot be null!");
@@ -171,11 +179,72 @@ public class ConfigLoader {
         }
 
 
-        @NotNull public List<String> getMessages() {
-            return this.messages;
+        /**
+         * Gets the MOTDs.
+         * @return the MOTDs
+         */
+        @NotNull public List<String> getMOTDs() {
+            return this.motds;
         }
 
-        public void replaceMessages(@NotNull List<String> messages) {
+        /**
+         * Replaces the MOTDs with the given list.
+         * @param motds the MOTDs
+         * @throws IllegalArgumentException if the MOTDs are null
+         */
+        public void replaceMOTDs(@NotNull List<String> motds) {
+            if (motds == null) {
+                throw new IllegalArgumentException("MOTDs cannot be null!");
+            }
+
+            this.motds = motds;
+        }
+
+
+        /**
+         * Gets the message with the given key, returning the key if it doesn't exist.
+         *
+         * @param key the key
+         * @return the message
+         * @throws IllegalArgumentException if the key is null
+         */
+        @NotNull public String getMessage(@NotNull String key) {
+            if (key == null) {
+                throw new IllegalArgumentException("Key cannot be null!");
+            }
+
+            if (this.messages.containsKey(key)) {
+                return this.messages.get(key);
+            } else {
+                return key;
+            }
+        }
+
+        /**
+         * Inserts the message with the given key.
+         *
+         * @param key the key
+         * @param message the message
+         * @throws IllegalArgumentException if the key or message is null
+         */
+        public void insertMessage(@NotNull String key, @NotNull String message) {
+            if (key == null) {
+                throw new IllegalArgumentException("Key cannot be null!");
+            }
+
+            if (message == null) {
+                throw new IllegalArgumentException("Message cannot be null!");
+            }
+
+            this.messages.put(key, message);
+        }
+
+        /**
+         * Replaces the messages with the given map.
+         * @param messages the messages
+         * @throws IllegalArgumentException if the messages are null
+         */
+        public void replaceMessages(@NotNull Map<String, String> messages) {
             if (messages == null) {
                 throw new IllegalArgumentException("Messages cannot be null!");
             }
@@ -282,21 +351,52 @@ public class ConfigLoader {
             throw new RuntimeException("motds not found in config!");
         }
 
-        // load each message and validate templates
-        List<String> messages = this.config.getStringList("motds");
+        if (!this.config.contains("messages")) {
+            throw new RuntimeException("messages not found in config!");
+        }
 
-        for (String message : messages) {
+        // load each motd and validate templates
+        List<String> motds = this.config.getStringList("motds");
+
+        for (String motd : motds) {
+            // check if the motd is empty
+            if (motd.isEmpty()) {
+                throw new RuntimeException("Empty message found in config!");
+            }
+
+            if (!validateTemplates(motd)) {
+                throw new RuntimeException("Invalid template \"" + motd + "\" found in config!\\nYou may need to escape percent signs with a backslash (\\\\). E.g: \\\\%");
+            }
+
+            // push the motd to the list of motds
+            this.parsed_config.getMOTDs().add(motd);
+        }
+
+        // load each message, pushing nested messages with dots (e.g. reload.success)
+        Configuration messages = this.config.getSection("messages");
+
+        // get all keys, including nested keys
+        Collection<String> top_level_keys = messages.getKeys();
+        List<String> keys = new ArrayList<>();
+
+        // check each key for nested keys
+        for (String key: top_level_keys) {
+            if (messages.getSection(key) != null) {
+                keys.addAll(messages.getSection(key).getKeys());
+            } else {
+                keys.add(key);
+            }
+        }
+
+        for (String key : keys) {
+            String message = messages.getString(key);
+
             // check if the message is empty
             if (message.isEmpty()) {
                 throw new RuntimeException("Empty message found in config!");
             }
 
-            if (!validateTemplates(message)) {
-                throw new RuntimeException("Invalid template \"" + message + "\" found in config!\\nYou may need to escape percent signs with a backslash (\\\\). E.g: \\\\%");
-            }
-
-            // push the message to the list of messages
-            this.parsed_config.getMessages().add(message);
+            this.parsed_config.insertMessage(key, message);
         }
 
         this.is_parsed = true;
