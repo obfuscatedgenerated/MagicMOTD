@@ -44,8 +44,13 @@ public class PingHandler implements Listener {
     private String getMOTD(int index, ProxyPingEvent event) {
         String motd = this.config_loader.getParsedConfig().getMOTDs().get(index);
 
-        // get the player's ip address
-        String ip = event.getConnection().getSocketAddress().toString();
+        // get the player's ip address by removing the port and the first character (which is a '/')
+        String address = event.getConnection().getSocketAddress().toString();
+        try {
+            address = address.substring(0, address.indexOf("/"));
+        } catch (StringIndexOutOfBoundsException e) {
+            // do nothing
+        }
 
         // TODO: resolve player name
         String name = this.config_loader.getParsedConfig().getDefaultPlayerName();
