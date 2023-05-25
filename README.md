@@ -20,6 +20,13 @@ I opted to use H2 as it is lighter than SQLite and MapDB. I wanted a single-file
 
 There are plans to allow for a choice of storage implementation, but for now you'll have to fork the repo if you wish to use a different DB.
 
+## When player name detection might not work
+
+- Multiple players are using the same IP address (e.g. behind a NAT like a home, school or office network). Other players may see the wrong name in the MOTD.
+- The player frequently changes their IP address (e.g. using a VPN or dynamic IP address)
+
+These limitations cannot be overcome, as the plugin has no way of knowing which player is pinging the proxy. It collects their IP when they join, and uses that to determine their name next time they ping the proxy.
+
 ## Commands
 
 | Command                   | Alias    | Description                                                                                                       | Permission         |
