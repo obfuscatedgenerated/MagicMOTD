@@ -163,11 +163,13 @@ public class ConfigLoader {
     }
 
 
+    private static final String FALLBACK_DEFAULT_PLAYER_NAME = "player";
+
     /**
      * Represents a parsed configuration.
      */
     public static class ParsedConfig {
-        private String default_player_name = "Player";
+        private String default_player_name = FALLBACK_DEFAULT_PLAYER_NAME;
         private List<String> motds = new ArrayList<>();
         private Map<String, String> messages = new HashMap<>();
 
@@ -394,11 +396,10 @@ public class ConfigLoader {
         String default_player_name = this.config.getString("default_player_name");
 
         if (default_player_name == null) {
-            this.plugin.getLogger().warning("Default player name not found in config, using \"Player\".");
-            default_player_name = "Player";
+            this.plugin.getLogger().warning("Default player name not found in config, using \"" + FALLBACK_DEFAULT_PLAYER_NAME + "\" instead!");
+        } else {
+            this.parsed_config.setDefaultPlayerName(default_player_name);
         }
-
-        this.parsed_config.setDefaultPlayerName(default_player_name);
 
 
         if (!this.config.contains("motds")) {
