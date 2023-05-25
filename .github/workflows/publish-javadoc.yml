@@ -1,0 +1,21 @@
+name: Deploy Javadoc
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+      - pom.xml
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy JavaDoc 🚀
+        uses: obfuscatedgenerated/Javadoc-publisher.yml@fork
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          javadoc-branch: gh-pages
+          target-folder: javadoc
+          project: maven
