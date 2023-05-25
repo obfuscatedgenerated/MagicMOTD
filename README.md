@@ -12,6 +12,14 @@ server operators to serve customised MOTDs to players.
 - Use templates to display dynamic information
 - Force a specific MOTD with a command
 
+## How does it work?
+
+**Magic.** *(and H2)*
+
+I opted to use H2 as it is lighter than SQLite and MapDB. I wanted a single-file DB (but not slow like JSON) to store KV. In the plugin JAR, H2 takes up a little over a megabyte (compared to upwards of 16MB for the other choices).
+
+There are plans to allow for a choice of storage implementation, but for now you'll have to fork the repo if you wish to use a different DB.
+
 ## Commands
 
 | Command                   | Alias    | Description                                                                                                       | Permission         |
