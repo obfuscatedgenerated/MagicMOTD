@@ -6,6 +6,7 @@ import codes.ollieg.magicmotd.handlers.PingHandler;
 import codes.ollieg.magicmotd.handlers.PostLoginHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
+import org.bstats.bungeecord.Metrics;
 
 import java.sql.SQLException;
 
@@ -16,6 +17,7 @@ public final class MagicMOTD extends Plugin {
     private final ConfigLoader config_loader = new ConfigLoader(this);
     private final PlayerDB player_db = new PlayerDB(this);
     private final PingHandler ping_handler = new PingHandler(this);
+    private Metrics metrics;
 
     /**
      * Gets the {@link ConfigLoader} instance associated with this plugin.
@@ -65,6 +67,9 @@ public final class MagicMOTD extends Plugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        // connect to bstats
+        this.metrics = new Metrics(this, 18579);
 
         getLogger().info("MagicMOTD has been enabled!");
     }
