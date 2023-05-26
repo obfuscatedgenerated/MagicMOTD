@@ -6,7 +6,7 @@ This plugin was inspired by plugins like [SwiftMOTD](https://www.spigotmc.org/re
 
 As opposed to SwiftMOTD, the plugin stores the IP to player name map to the disk, so that it is recovered when the server restarts. Additionally, it uses up to date BungeeCord APIs, to avoid deprecation and eliminate the BungeeYAML dependency.
 
-This plugin uses [bStats](https://bstats.org/) to collect anonymous usage data. You can opt out of this by disabling metrics in bStats' `config.yml` file. Read their privacy policy [here](https://bstats.org/privacy-policy). Your data is only used for the purposes of deciding areas of the plugin to improve.
+This plugin uses [bStats](https://bstats.org/plugin/bungeecord/MagicMOTD/18579) to collect anonymous usage data. You can opt out of this by disabling metrics in bStats' `config.yml` file. Read their privacy policy [here](https://bstats.org/privacy-policy). Your data is only used for the purposes of deciding areas of the plugin to improve.
 
 ## Features
 
