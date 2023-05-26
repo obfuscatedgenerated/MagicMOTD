@@ -1,5 +1,6 @@
 package codes.ollieg.magicmotd;
 
+import org.h2.jdbcx.JdbcConnectionPool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public class PlayerDB {
     private final MagicMOTD plugin;
-    private final String url;
-    private boolean ready = false;
+
+    private JdbcConnectionPool pool;
+
 
     /**
      * Constructs a new {@link PlayerDB}.
      * @param plugin the plugin
      * @throws IllegalArgumentException if the plugin is null
-     * @throws RuntimeException if the H2 database driver cannot be found
      */
     public PlayerDB(@NotNull MagicMOTD plugin) {
         if (plugin == null) {
@@ -28,36 +29,68 @@ public class PlayerDB {
         }
 
         this.plugin = plugin;
+    }
+
+
+    /**
+     * Creates a connection pool to the database.
+     * @throws RuntimeException if the H2 database driver cannot be found
+     * @throws IllegalStateException if the database is already ready
+     */
+    public void readyConnections() {
+        if (isReady()) {
+            throw new IllegalStateException("Database is already ready!");
+        }
 
         // use MySQL mode to allow for ON DUPLICATE KEY UPDATE
         File db_path = new File(this.plugin.getDataFolder(), "MagicMOTD");
-        url = "jdbc:h2:" + db_path.getAbsolutePath() + ";mode=MySQL";
+        String url = "jdbc:h2:" + db_path.getAbsolutePath() + ";mode=MySQL";
 
         try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        // create the connection pool
+        this.pool = JdbcConnectionPool.create(url, "", "");
     }
+
 
     /**
      * Returns whether the database is ready to be used.
      * @return whether the database is ready
      */
     public boolean isReady() {
-        return this.ready;
+        return this.pool != null;
     }
+
+    /**
+     * Destroys the connection pool.
+     * @throws IllegalStateException if the database is not ready
+     */
+    public void destroyConnections() {
+        if (!isReady()) {
+            throw new IllegalStateException("Database is not ready!");
+        }
+
+        this.pool.dispose();
+        this.pool = null;
+    }
+
 
     /**
      * Creates the database and its table if they don't exist.
      * @throws SQLException if an error occurs while creating the database or table
      * @throws RuntimeException if the connection fails
+     * @throws IllegalStateException if the database is not ready
      */
     public void createIfNotExists() throws SQLException {
-        // with h2, there's little benefit to pooling connections
-        // using a try-with-resources block will automatically close the connection safely
-        // TODO: this was true for sqlite, but is it true for h2?
-        try (Connection conn = DriverManager.getConnection(url)) {
+        if (!isReady()) {
+            throw new IllegalStateException("Database is not ready!");
+        }
+
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }
@@ -69,8 +102,6 @@ public class PlayerDB {
             // the table is a simple KV store of ip -> name
             Statement statement = conn.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS PLAYERS (ip TEXT PRIMARY KEY, name TEXT NOT NULL)");
-
-            this.ready = true;
         }
     }
 
@@ -93,12 +124,12 @@ public class PlayerDB {
             throw new IllegalArgumentException("Name cannot be null!");
         }
 
-        if (!this.ready) {
+        if (!isReady()) {
             throw new IllegalStateException("Database is not ready!");
         }
 
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }
@@ -121,11 +152,11 @@ public class PlayerDB {
             throw new IllegalArgumentException("IP cannot be null!");
         }
 
-        if (!this.ready) {
+        if (!isReady()) {
             throw new IllegalStateException("Database is not ready!");
         }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }
@@ -157,11 +188,11 @@ public class PlayerDB {
             throw new IllegalArgumentException("Name cannot be null!");
         }
 
-        if (!this.ready) {
+        if (!isReady()) {
             throw new IllegalStateException("Database is not ready!");
         }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }
@@ -194,11 +225,11 @@ public class PlayerDB {
             throw new IllegalArgumentException("IP cannot be null!");
         }
 
-        if (!this.ready) {
+        if (!isReady()) {
             throw new IllegalStateException("Database is not ready!");
         }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }
@@ -223,11 +254,11 @@ public class PlayerDB {
             throw new IllegalArgumentException("Name cannot be null!");
         }
 
-        if (!this.ready) {
+        if (!isReady()) {
             throw new IllegalStateException("Database is not ready!");
         }
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = this.pool.getConnection()) {
             if (conn == null) {
                 throw new RuntimeException("Connection is null!");
             }

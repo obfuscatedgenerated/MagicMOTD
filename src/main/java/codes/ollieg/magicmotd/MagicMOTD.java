@@ -58,8 +58,9 @@ public final class MagicMOTD extends Plugin {
         plugin_manager.registerCommand(this, new CommandReloadMOTD(this.config_loader));
         plugin_manager.registerCommand(this, new CommandForceMOTD(this));
 
-        // create the database if it doesn't exist
+        // ready & create the database if it doesn't exist
         try {
+            this.player_db.readyConnections();
             this.player_db.createIfNotExists();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,6 +74,7 @@ public final class MagicMOTD extends Plugin {
      */
     @Override
     public void onDisable() {
+        this.player_db.destroyConnections();
         getLogger().info("MagicMOTD has been disabled!");
     }
 }
