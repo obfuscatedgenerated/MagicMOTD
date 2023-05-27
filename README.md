@@ -2,6 +2,8 @@
 
 > A BungeeCord proxy plugin that replaces the MOTD with dynamic messages!
 
+***Please note: this plugin is for BungeeCord (or other proxies) ONLY. A Spigot version is on the roadmap for the distant future.***
+
 This plugin was inspired by plugins like [SwiftMOTD](https://www.spigotmc.org/resources/swiftmotd.221/), that allow server operators to serve customised MOTDs to players.
 
 As opposed to SwiftMOTD, the plugin stores the IP to player name map to the disk, so that it is recovered when the server restarts. Additionally, it uses up to date BungeeCord APIs, to avoid deprecation and eliminate the BungeeYAML dependency.
