@@ -393,6 +393,8 @@ public class ConfigLoader {
      * @throws RuntimeException if the config is invalid
      */
     public void parseConfig() {
+        this.is_parsed = false;
+
         // get the default player name
         String default_player_name = this.config.getString("default_player_name");
 
