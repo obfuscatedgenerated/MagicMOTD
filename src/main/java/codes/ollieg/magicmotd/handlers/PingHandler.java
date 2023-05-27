@@ -117,6 +117,12 @@ public class PingHandler implements Listener {
 
         List<String> motds = this.config_loader.getParsedConfig().getMOTDs();
 
+        // if there are no motds, abort
+        if (motds.size() == 0) {
+            return;
+        }
+
+
         // if forcing an MOTD, check if the index is valid
         // if invalid, fall back to random MOTD
         int index = this.force_motd_index;

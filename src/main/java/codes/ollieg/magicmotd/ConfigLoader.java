@@ -404,15 +404,26 @@ public class ConfigLoader {
 
 
         if (!this.config.contains("motds")) {
-            throw new RuntimeException("motds not found in config!");
+            throw new RuntimeException("motds not found or invalid in config! Please make sure it is a list of strings (with a - on each line), or a single string.");
         }
 
         if (!this.config.contains("messages")) {
-            throw new RuntimeException("messages not found in config!");
+            throw new RuntimeException("messages not found or invalid in config! Try reverting the section back to the default config, found here: https://raw.githubusercontent.com/obfuscatedgenerated/MagicMOTD/main/src/main/resources/config.yml");
         }
 
         // load each motd and validate templates
         List<String> motds = this.config.getStringList("motds");
+
+        // if string list has length of 0, try interpreting it as a single string
+        if (motds.size() == 0) {
+            String motd = this.config.getString("motds");
+
+            if (motd == null) {
+                throw new RuntimeException("motds not found or invalid in config! Please make sure it is a list of strings (with a - on each line), or a single string.");
+            }
+
+            motds = Collections.singletonList(motd);
+        }
 
         // erase the motds list
         this.parsed_config.getMOTDs().clear();
@@ -420,7 +431,7 @@ public class ConfigLoader {
         for (String motd : motds) {
             // check if the motd is empty
             if (motd.isEmpty()) {
-                throw new RuntimeException("Empty message found in config!");
+                throw new RuntimeException("Empty or invalid message found in config! MOTD: \"" + motd + "\"");
             }
 
             if (!validateTemplates(motd)) {
@@ -460,7 +471,7 @@ public class ConfigLoader {
 
             // check if the message is empty
             if (message.isEmpty()) {
-                throw new RuntimeException("Empty message found in config!");
+                throw new RuntimeException("Empty or invalid message found in config!");
             }
 
             this.parsed_config.insertMessage(key, message);
