@@ -414,6 +414,9 @@ public class ConfigLoader {
         // load each motd and validate templates
         List<String> motds = this.config.getStringList("motds");
 
+        // erase the motds list
+        this.parsed_config.getMOTDs().clear();
+
         for (String motd : motds) {
             // check if the motd is empty
             if (motd.isEmpty()) {
