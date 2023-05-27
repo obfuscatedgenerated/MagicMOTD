@@ -93,7 +93,7 @@ public class CommandForceMOTD extends Command {
         this.ping_handler.setForceMOTDIndex(index);
 
         sender.sendMessage(new ComponentBuilder(config.getMessage("force.success")
-                .replaceAll("(?i)%index%", String.valueOf(index))
+                .replaceAll("(?i)%index%", String.valueOf(index + 1))
                 .replaceAll("(?i)%content%", motds.get(index))
         ).color(ChatColor.GREEN).create());
 
