@@ -73,7 +73,7 @@ public class CommandForceMOTD extends Command {
         // if args are not empty, try to parse the index
         int index;
         try {
-            index = Integer.parseInt(args[0]);
+            index = Integer.parseInt(args[0]) - 1;
         } catch (NumberFormatException e) {
             sender.sendMessage(new ComponentBuilder(config.getMessage("force.invalid-index")).color(ChatColor.RED).create());
             return;
@@ -81,7 +81,7 @@ public class CommandForceMOTD extends Command {
 
         List<String> motds = config.getMOTDs();
 
-        if (index < 1 || index >= motds.size()) {
+        if (index < 0 || index >= motds.size()) {
             sender.sendMessage(new ComponentBuilder(config.getMessage("force.out-of-range")
                     .replaceAll("(?i)%max%", String.valueOf(motds.size()))
             ).color(ChatColor.RED).create());
