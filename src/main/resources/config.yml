@@ -2,7 +2,7 @@
 default_player_name: player
 
 # Define each MOTD here.
-# You can use formatting codes with § and newlines with \n.
+# You can use formatting codes with § or & and newlines with \n.
 # You can use templates to show dynamic information.
 # Available templates:
 # %player% - Player name
@@ -10,7 +10,7 @@ default_player_name: player
 # %max% - Max player count
 motds:
   - "§aHello, §e%player%§a!"
-  - "§cThere are §e%online%/%max%§c players online!"
+  - "&cThere are &e%online%/%max%&c players online!"
   - "§eLine 1\nLine 2"
 
 # When using the /forcemotd command, you can specify the position in the list of messages to force.

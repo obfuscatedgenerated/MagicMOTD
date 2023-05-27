@@ -1,5 +1,6 @@
 package codes.ollieg.magicmotd;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -422,6 +423,9 @@ public class ConfigLoader {
             if (!validateTemplates(motd)) {
                 throw new RuntimeException("Invalid template in \"" + motd + "\" found in config!\nYou may need to escape percent signs with a backslash (\\\\). E.g: \\\\%");
             }
+
+            // translate & color codes to § color codes
+            motd = ChatColor.translateAlternateColorCodes('&', motd);
 
             // push the motd to the list of motds
             this.parsed_config.getMOTDs().add(motd);
