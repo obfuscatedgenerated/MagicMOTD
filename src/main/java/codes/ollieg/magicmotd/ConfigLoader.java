@@ -103,7 +103,6 @@ public class ConfigLoader {
      * (Re)loads the config file into memory.
      *
      * @param parse whether to parse the config or not (uses {@link #parseConfig()})
-     *
      * @return true if successful, false otherwise
      */
     public boolean reloadConfig(boolean parse) {
@@ -159,7 +158,8 @@ public class ConfigLoader {
      *
      * @return the config
      */
-    @NotNull public Configuration getRawConfig() {
+    @NotNull
+    public Configuration getRawConfig() {
         return this.config;
     }
 
@@ -177,14 +177,17 @@ public class ConfigLoader {
 
         /**
          * Gets the default player name.
+         *
          * @return the default player name
          */
-        @NotNull public String getDefaultPlayerName() {
+        @NotNull
+        public String getDefaultPlayerName() {
             return this.default_player_name;
         }
 
         /**
          * Sets the default player name.
+         *
          * @param default_player_name the default player name
          * @throws IllegalArgumentException if the default player name is null
          */
@@ -199,14 +202,17 @@ public class ConfigLoader {
 
         /**
          * Gets the MOTDs.
+         *
          * @return the MOTDs
          */
-        @NotNull public List<String> getMOTDs() {
+        @NotNull
+        public List<String> getMOTDs() {
             return this.motds;
         }
 
         /**
          * Replaces the MOTDs with the given list.
+         *
          * @param motds the MOTDs
          * @throws IllegalArgumentException if the MOTDs are null
          */
@@ -226,7 +232,8 @@ public class ConfigLoader {
          * @return the message
          * @throws IllegalArgumentException if the key is null
          */
-        @NotNull public String getMessage(@NotNull String key) {
+        @NotNull
+        public String getMessage(@NotNull String key) {
             if (key == null) {
                 throw new IllegalArgumentException("Key cannot be null!");
             }
@@ -241,7 +248,7 @@ public class ConfigLoader {
         /**
          * Inserts the message with the given key.
          *
-         * @param key the key
+         * @param key     the key
          * @param message the message
          * @throws IllegalArgumentException if the key or message is null
          */
@@ -259,6 +266,7 @@ public class ConfigLoader {
 
         /**
          * Replaces the messages with the given map.
+         *
          * @param messages the messages
          * @throws IllegalArgumentException if the messages are null
          */
@@ -280,7 +288,8 @@ public class ConfigLoader {
      * @return the {@link ParsedConfig parsed config}
      * @throws IllegalStateException if the config has not been parsed yet
      */
-    @NotNull public ParsedConfig getParsedConfig() {
+    @NotNull
+    public ParsedConfig getParsedConfig() {
         if (!this.is_parsed) {
             throw new IllegalStateException("Config has not been parsed yet!");
         }
@@ -289,7 +298,7 @@ public class ConfigLoader {
     }
 
 
-    private final List<String> KNOWN_TEMPLATES = Arrays.asList("player", "online", "max", "ping");
+    private final List<String> KNOWN_TEMPLATES = Arrays.asList("player", "online", "max", "ping", "c");
     private final Pattern TEMPLATE_REGEX = Pattern.compile("(?<!\\\\)(?:\\\\{2})*%(?:(?<!\\\\)(?:\\\\{2})*\\\\%|[^%])+(?<!\\\\)(?:\\\\{2})*%");
     private final Pattern BETWEEN_PERCENT_REGEX = Pattern.compile("%(.*?)%");
 
@@ -299,7 +308,6 @@ public class ConfigLoader {
      *
      * @param message the message to check
      * @return true if all templates are valid, false otherwise
-     *
      * @throws IllegalArgumentException if the message is null
      */
     public boolean validateTemplates(@NotNull String message) {
@@ -334,11 +342,10 @@ public class ConfigLoader {
     /**
      * Substitutes all templates in the message with the given values.
      *
-     * @param message           The message to substitute
-     * @param player_name       The player name
-     * @param online_players    The number of online players
-     * @param max_players       The maximum number of players
-     *
+     * @param message        The message to substitute
+     * @param player_name    The player name
+     * @param online_players The number of online players
+     * @param max_players    The maximum number of players
      * @return The substituted message
      */
     public String substituteTemplates(@NotNull String message, @NotNull String player_name, int online_players, int max_players) {
@@ -366,11 +373,11 @@ public class ConfigLoader {
                 continue;
             }
 
-            if(!KNOWN_TEMPLATES.contains(template.toLowerCase())) {
+            if (!KNOWN_TEMPLATES.contains(template.toLowerCase())) {
                 continue;
             }
 
-            switch(template) {
+            switch (template) {
                 case "player":
                     message = message.replace(full_match, player_name);
                     break;
@@ -456,7 +463,7 @@ public class ConfigLoader {
 
         // check each key for nested keys
         // only one level of nesting is supported or required
-        for (String top_level_key: top_level_keys) {
+        for (String top_level_key : top_level_keys) {
             if (messages.get(top_level_key) instanceof Configuration) {
                 Collection<String> nested_keys = messages.getSection(top_level_key).getKeys();
 

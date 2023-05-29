@@ -1,6 +1,7 @@
 package codes.ollieg.magicmotd.handlers;
 
 import codes.ollieg.magicmotd.ConfigLoader;
+import codes.ollieg.magicmotd.FontLib;
 import codes.ollieg.magicmotd.MagicMOTD;
 import codes.ollieg.magicmotd.PlayerDB;
 import net.md_5.bungee.api.ServerPing;
@@ -96,7 +97,22 @@ public class PingHandler implements Listener {
         int player_count = player_counts.getOnline();
         int max_players = player_counts.getMax();
 
-        return this.config_loader.substituteTemplates(motd, name, player_count, max_players);
+        String substituted = this.config_loader.substituteTemplates(motd, name, player_count, max_players);
+
+        // for each line, if it starts with %C% ignoring case, center it
+        String[] lines = substituted.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+
+            if (line.toLowerCase().startsWith("%c%")) {
+                line = line.substring(3);
+                line = FontLib.centerText(line);
+            }
+
+            lines[i] = line;
+        }
+
+        return String.join("\n", lines);
     }
 
 

@@ -3,15 +3,18 @@ default_player_name: player
 
 # Define each MOTD here.
 # You can use formatting codes with § or & and newlines with \n.
+# To center text, write %C% at the start of the line.
+# (Note: this is dependent on the player's font size. The default size is used when centering.)
 # You can use templates to show dynamic information.
 # Available templates:
 # %player% - Player name
 # %online% - Online player count
 # %max% - Max player count
 motds:
-  - "§aHello, §e%player%§a!"
+  - "%c%§aHello, §e%player%§a!"
   - "&cThere are &e%online%/%max%&c players online!"
-  - "§eLine 1\nLine 2"
+  - "%C%§eCentered Line 1\n%C%Centered Line 2"
+  - "%C%§eCentered Line 1\nUncentered Line 2"
 
 # When using the /forcemotd command, you can specify the position in the list of messages to force.
 # For example, to force the first message, you would use /forcemotd 1.
