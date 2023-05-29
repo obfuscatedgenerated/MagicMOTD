@@ -5,6 +5,7 @@ default_player_name: player
 # You can use formatting codes with § or & and newlines with \n.
 # To center text, write %C% AT THE START of the line, either at the start of the message or after a newline.
 # (Note: this is dependent on the player's font size. The default size is used when centering.)
+# Centering works best with Latin characters (abcd...), but will still work with other character sets.
 # You can use templates to show dynamic information.
 # Available templates:
 # %player% - Player name
