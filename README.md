@@ -29,6 +29,7 @@ There are plans to allow for a choice of storage implementation, but for now you
 ## When player name detection might not work
 
 - You forgot to enable `ip_forward` in BungeeCord's `config.yml`.
+- You enabled `ping_passthrough` in BungeeCord's config.yml.
 - Multiple players are using the same IP address (e.g. behind a NAT like a home, school or office network). Other players may see the wrong name in the MOTD.
 - The player frequently changes their IP address (e.g. using a VPN or dynamic IP address)
 - Your server is behind a reverse proxy (e.g. Cloudflare, ngrok, etc.)
